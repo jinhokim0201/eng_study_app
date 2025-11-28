@@ -8,13 +8,14 @@ import LearningReport from './components/LearningReport';
 import DiagnosticTest from './components/DiagnosticTest';
 import { generateCurriculum } from './utils/curriculumGenerator';
 import { generateWords } from './services/wordGenerationService';
+import { safeLocalStorage } from './utils/storage';
 import './components/LevelMap.css';
 import './components/DiagnosticTest.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [levels, setLevels] = useState(() => {
-    const saved = localStorage.getItem('vocaFlowLevels_v2');
+    const saved = safeLocalStorage.getItem('vocaFlowLevels_v2');
     return saved ? JSON.parse(saved) : generateCurriculum();
   });
   const [currentLevelId, setCurrentLevelId] = useState(1);
@@ -23,7 +24,7 @@ function App() {
   const [isGeneratingWords, setIsGeneratingWords] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('vocaFlowLevels_v2', JSON.stringify(levels));
+    safeLocalStorage.setItem('vocaFlowLevels_v2', JSON.stringify(levels));
   }, [levels]);
 
   const handleStartLevel = (levelId) => {

@@ -1,3 +1,5 @@
+import { safeLocalStorage } from '../utils/storage';
+
 // Service to generate words using the backend API (Vercel Function)
 
 export const initializeAPI = () => {
@@ -37,7 +39,7 @@ export const generateWords = async (difficulty, count = 20) => {
     const difficultyLevel = difficulty <= 20 ? 'beginner' : difficulty <= 60 ? 'intermediate' : 'advanced';
 
     // Get previously used words from localStorage
-    const usedWordsJson = localStorage.getItem('vocaflow_used_words');
+    const usedWordsJson = safeLocalStorage.getItem('vocaflow_used_words');
     const usedWords = usedWordsJson ? JSON.parse(usedWordsJson) : [];
 
     const excludeList = usedWords.length > 0
@@ -74,7 +76,7 @@ Generate ${count} words now:`;
         // Track new words
         const newWords = words.map(w => w.word.toLowerCase());
         const updatedUsedWords = [...new Set([...usedWords, ...newWords])]; // Remove duplicates
-        localStorage.setItem('vocaflow_used_words', JSON.stringify(updatedUsedWords));
+        safeLocalStorage.setItem('vocaflow_used_words', JSON.stringify(updatedUsedWords));
 
         console.log(`Generated ${words.length} new words. Total unique words used: ${updatedUsedWords.length}`);
 
