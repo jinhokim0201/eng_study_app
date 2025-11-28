@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "word": "Epiphany",
+        "definition": "갑작스러운 깨달음, 직관, 통찰",
+        "example": "He had an epiphany that he was in the wrong career.",
+        "image": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=500&q=60",
+        "nextReview": null,
+        "level": 0
+    },
+    {
+        "id": 2,
+        "word": "Serendipity",
+        "definition": "뜻밖의 행운, 우연히 발견하는 능력",
+        "example": "It was pure serendipity that we met at the coffee shop.",
+        "image": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=500&q=60",
+        "nextReview": null,
+        "level": 0
+    },
+    {
+        "id": 3,
+        "word": "Resilience",
+        "definition": "회복력, 탄력성",
+        "example": "Her resilience in the face of adversity is inspiring.",
+        "image": "https://images.unsplash.com/photo-1520333789090-1afc82db536a?auto=format&fit=crop&w=500&q=60",
+        "nextReview": null,
+        "level": 0
+    },
+    {
+        "id": 4,
+        "word": "Eloquent",
+        "definition": "웅변의, 설득력 있는, 감동적인",
+        "example": "He gave an eloquent speech that moved the audience.",
+        "image": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=500&q=60",
+        "nextReview": null,
+        "level": 0
+    },
+    {
+        "id": 5,
+        "word": "Mellifluous",
+        "definition": "(목소리나 말이) 감미로운, 듣기 좋은",
+        "example": "She had a rich, mellifluous voice.",
+        "image": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=500&q=60",
+        "nextReview": null,
+        "level": 0
+    }
+]
