@@ -1,35 +1,39 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+// Service to generate words using the backend API (Vercel Function)
 
-// API 키를 직접 포함 (사용자가 입력할 필요 없음)
-const API_KEY = 'AIzaSyA3_ToBeagaPBlwRfIEJ1BuLbulG5bVV6A';
-
-let genAI = new GoogleGenerativeAI(API_KEY);
-
-export const initializeAPI = (apiKey) => {
-    try {
-        genAI = new GoogleGenerativeAI(apiKey);
-        return true;
-    } catch (error) {
-        console.error('Failed to initialize API:', error);
-        return false;
-    }
+export const initializeAPI = () => {
+    // No initialization needed for backend proxy
+    return true;
 };
 
 export const validateAPIKey = async (apiKey) => {
+    // Validation is now handled by the backend
+    return true;
+};
+
+const callBackendAPI = async (prompt) => {
     try {
-        const tempAI = new GoogleGenerativeAI(apiKey);
-        const model = tempAI.getGenerativeModel({ model: 'gemini-pro' });
-        await model.generateContent('Test');
-        return true;
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.text;
     } catch (error) {
-        console.error('API Key validation failed:', error);
-        return false;
+        console.error('Backend API call failed:', error);
+        throw error;
     }
 };
 
 export const generateWords = async (difficulty, count = 20) => {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
     const difficultyLevel = difficulty <= 20 ? 'beginner' : difficulty <= 60 ? 'intermediate' : 'advanced';
 
     // Get previously used words from localStorage
@@ -60,9 +64,7 @@ Format:
 Generate ${count} words now:`;
 
     try {
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        const text = await callBackendAPI(prompt);
 
         // Remove markdown code blocks if present
         const jsonText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -94,8 +96,6 @@ Generate ${count} words now:`;
 
 // Generate diagnostic test words with varying difficulty levels
 export const generateDiagnosticWords = async () => {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
     const prompt = `Generate exactly 20 English vocabulary words for a diagnostic test with varying difficulty levels.
 
 Requirements:
@@ -129,9 +129,7 @@ Format:
 Generate 20 words now with appropriate difficulty matching:`;
 
     try {
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        const text = await callBackendAPI(prompt);
 
         // Remove markdown code blocks if present
         const jsonText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
