@@ -1,15 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Initialize API with environment variable or localStorage
-const ENV_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const STORAGE_API_KEY = typeof window !== 'undefined' ? localStorage.getItem('gemini_api_key') : null;
-const API_KEY = ENV_API_KEY || STORAGE_API_KEY;
+// API 키를 직접 포함 (사용자가 입력할 필요 없음)
+const API_KEY = 'AIzaSyA3_ToBeagaPBlwRfIEJ1BuLbulG5bVV6A';
 
-if (!API_KEY) {
-    console.warn('Gemini API key not found. Please set your API key.');
-}
-
-let genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
+let genAI = new GoogleGenerativeAI(API_KEY);
 
 export const initializeAPI = (apiKey) => {
     try {
@@ -34,10 +28,6 @@ export const validateAPIKey = async (apiKey) => {
 };
 
 export const generateWords = async (difficulty, count = 20) => {
-    if (!genAI) {
-        throw new Error('API not initialized. Please set your API key in .env file.');
-    }
-
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const difficultyLevel = difficulty <= 20 ? 'beginner' : difficulty <= 60 ? 'intermediate' : 'advanced';
@@ -98,16 +88,12 @@ Generate ${count} words now:`;
         }));
     } catch (error) {
         console.error('Error generating words:', error);
-        throw new Error('Failed to generate words. Please check your API key and try again.');
+        throw new Error('단어 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
 };
 
 // Generate diagnostic test words with varying difficulty levels
 export const generateDiagnosticWords = async () => {
-    if (!genAI) {
-        throw new Error('API not initialized. Please set your API key in .env file.');
-    }
-
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const prompt = `Generate exactly 20 English vocabulary words for a diagnostic test with varying difficulty levels.
@@ -166,6 +152,6 @@ Generate 20 words now with appropriate difficulty matching:`;
         }));
     } catch (error) {
         console.error('Error generating diagnostic words:', error);
-        throw new Error('Failed to generate diagnostic words. Please check your API key and try again.');
+        throw new Error('진단평가 단어 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
 };

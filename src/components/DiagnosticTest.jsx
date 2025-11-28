@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DiagnosticTest.css';
 import { generateDiagnosticWords } from '../services/wordGenerationService';
-import ApiKeySettings from './ApiKeySettings';
 
 const DiagnosticTest = ({ onComplete }) => {
     const [step, setStep] = useState(0);
@@ -9,7 +8,6 @@ const DiagnosticTest = ({ onComplete }) => {
     const [testWords, setTestWords] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [showApiSettings, setShowApiSettings] = useState(false);
 
     useEffect(() => {
         // Generate test words using AI
@@ -74,29 +72,21 @@ const DiagnosticTest = ({ onComplete }) => {
 
     if (error) {
         return (
-            <>
-                {showApiSettings && (
-                    <ApiKeySettings onClose={() => {
-                        setShowApiSettings(false);
-                        loadDiagnosticWords();
-                    }} />
-                )}
-                <div className="diagnostic-container">
-                    <div className="diagnostic-card">
-                        <div className="word-display">
-                            <h3>오류 발생</h3>
-                            <p style={{ color: '#e74c3c' }}>{error}</p>
-                            <button
-                                className="btn-yes"
-                                onClick={() => setShowApiSettings(true)}
-                                style={{ marginTop: '20px' }}
-                            >
-                                🔑 API 키 설정
-                            </button>
-                        </div>
+            <div className="diagnostic-container">
+                <div className="diagnostic-card">
+                    <div className="word-display">
+                        <h3>오류 발생</h3>
+                        <p style={{ color: '#e74c3c' }}>{error}</p>
+                        <button
+                            className="btn-yes"
+                            onClick={() => loadDiagnosticWords()}
+                            style={{ marginTop: '20px' }}
+                        >
+                            다시 시도
+                        </button>
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 
