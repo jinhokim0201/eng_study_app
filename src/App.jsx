@@ -52,21 +52,17 @@ function App() {
     const session = level.sessions[sessionIndex];
     let wordsToUse = session.words;
 
-    // Try to generate AI words if API key is available in environment
-    const hasApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-    if (hasApiKey) {
-      setIsGeneratingWords(true);
-      try {
-        const avgDifficulty = session.words.reduce((sum, w) => sum + w.difficulty, 0) / session.words.length;
-        const aiWords = await generateWords(Math.round(avgDifficulty), 20);
-        wordsToUse = aiWords;
-      } catch (error) {
-        console.error('Failed to generate AI words, using static words:', error);
-        // Fall back to static words
-      } finally {
-        setIsGeneratingWords(false);
-      }
+    // Always try to generate AI words (backend handles the key)
+    setIsGeneratingWords(true);
+    try {
+      const avgDifficulty = session.words.reduce((sum, w) => sum + w.difficulty, 0) / session.words.length;
+      const aiWords = await generateWords(Math.round(avgDifficulty), 20);
+      wordsToUse = aiWords;
+    } catch (error) {
+      console.error('Failed to generate AI words, using static words:', error);
+      // Fall back to static words
+    } finally {
+      setIsGeneratingWords(false);
     }
 
     setSessionData({
